@@ -1,18 +1,32 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package newproj;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *
  * @author tscos
  */
 public class MainWindow extends javax.swing.JFrame implements Runnable {
+
+    ArrayList<Destinations> destsReadFromFile = new ArrayList<Destinations>();
+
+    ArrayList<Destinations> desList = new ArrayList<Destinations>();
+    int[] availSeats = new int[5];
 
     String loggedInAccount;
     String time;
@@ -26,10 +40,51 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         initComponents();
         mainLabel();
         initClock();
+        loadDestinations();
+
     }
 
     public void mainLabel() {
         titleLabel.setText("Welcome to the Wellington Train Booking Service, " + loggedInAccount);
+    }
+
+    public void loadDestinations() {
+        destsReadFromFile = readDestinationsFromFile("dests.txt");
+        System.out.println(destsReadFromFile);
+    }
+
+    //Method populates arraylist with data from file
+    public ArrayList<Destinations> readDestinationsFromFile(String fileName) {
+
+        try {
+            File file = new File(fileName);
+            Scanner s = new Scanner(file);
+            int i = 0;
+
+            while (s.hasNextLine()) {
+
+                String line = s.nextLine();
+                String[] items = line.split("\\|");
+
+                int index = Integer.parseInt(items[0]);
+                String name = items[1];
+                int price = Integer.parseInt(items[2]);
+                int numSeats = Integer.parseInt(items[3]);
+
+                availSeats[i] = numSeats;
+                i++;
+
+                Destinations newDest = new Destinations(index, name, price, numSeats);
+
+                //desList.add(newDest);
+                destinationList.addElement(newDest);
+            }
+
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Tickets.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return desList;
+
     }
 
     /**
@@ -50,7 +105,7 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         buyTicketButton = new javax.swing.JButton();
         helpButton = new javax.swing.JButton();
         logOutButton = new javax.swing.JButton();
-        jPanel3 = new javax.swing.JPanel();
+        viewTicketPane = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,24 +137,44 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
         viewTicketsButton.setText("View Tickets");
+        viewTicketsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewTicketsButtonActionPerformed(evt);
+            }
+        });
 
         viewDestinationsButton.setText("Destinations");
+        viewDestinationsButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewDestinationsButtonActionPerformed(evt);
+            }
+        });
 
         buyTicketButton.setText("Buy Tickets");
+        buyTicketButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyTicketButtonActionPerformed(evt);
+            }
+        });
 
         helpButton.setText("Help");
 
         logOutButton.setText("Logout");
+        logOutButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                logOutButtonActionPerformed(evt);
+            }
+        });
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 548, Short.MAX_VALUE)
+        javax.swing.GroupLayout viewTicketPaneLayout = new javax.swing.GroupLayout(viewTicketPane);
+        viewTicketPane.setLayout(viewTicketPaneLayout);
+        viewTicketPaneLayout.setHorizontalGroup(
+            viewTicketPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 550, Short.MAX_VALUE)
         );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 407, Short.MAX_VALUE)
+        viewTicketPaneLayout.setVerticalGroup(
+            viewTicketPaneLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 410, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -108,33 +183,33 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(48, 48, 48)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(viewDestinationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(buyTicketButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(67, 67, 67)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(viewDestinationsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
+                    .addComponent(buyTicketButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(helpButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(logOutButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(51, 51, 51)
+                .addComponent(viewTicketPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel2Layout.createSequentialGroup()
                     .addGap(48, 48, 48)
-                    .addComponent(viewTicketsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(650, Short.MAX_VALUE)))
+                    .addComponent(viewTicketsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(636, Short.MAX_VALUE)))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(33, Short.MAX_VALUE)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(viewTicketPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(105, 105, 105)
                         .addComponent(viewDestinationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(37, 37, 37)
                         .addComponent(buyTicketButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 140, Short.MAX_VALUE)
                         .addComponent(helpButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(logOutButton, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -165,6 +240,73 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    JPanel buyTicketPanel = new JPanel();
+    JPanel viewDestinations = new JPanel();
+    //ticketList<String> = destsReadFromFile<String>;
+    JLabel panelLabel = new JLabel();
+    DefaultListModel destinationList = new DefaultListModel<>();
+
+    JList list = new JList<>(destinationList);
+
+    private void viewDestinationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewDestinationsButtonActionPerformed
+        // TODO add your handling code here:
+
+        viewDestinations.add(list);
+        //  viewDestinations.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        viewDestinations.setSize(225, 125);
+        viewDestinations.setVisible(true);
+
+        viewTicketPane.setVisible(false);
+        buyTicketPanel.setVisible(false);
+        viewDestinations.setVisible(true);
+
+        viewDestinations.setLocation(220, 40);
+        viewDestinations.setSize(550, 410);
+        viewDestinations.setBackground(Color.green);
+        panelLabel.setText("Hello");
+        panelLabel.setFont(new Font("Calibri", Font.BOLD, 15));
+        panelLabel.setLocation(50, 50);
+        viewDestinations.add(panelLabel);
+
+        jPanel2.add(viewDestinations);
+
+
+    }//GEN-LAST:event_viewDestinationsButtonActionPerformed
+
+    private void viewTicketsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewTicketsButtonActionPerformed
+        // TODO add your handling code here:
+        viewTicketPane.setVisible(true);
+        buyTicketPanel.setVisible(false);
+        viewDestinations.setVisible(false);
+        panelLabel.setText("Purchased Tickets:");
+        panelLabel.setFont(new Font("Calibri", Font.BOLD, 15));
+        panelLabel.setLocation(250, 30);
+        panelLabel.setSize(100, 25);
+        viewTicketPane.add(panelLabel);
+
+    }//GEN-LAST:event_viewTicketsButtonActionPerformed
+
+    private void buyTicketButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyTicketButtonActionPerformed
+        // TODO add your handling code here:
+        viewTicketPane.setVisible(false);
+
+        viewDestinations.setVisible(false);
+
+        buyTicketPanel.setLocation(220, 40);
+        buyTicketPanel.setSize(550, 410);
+        buyTicketPanel.setBackground(Color.red);
+        buyTicketPanel.setVisible(true);
+
+        jPanel2.add(buyTicketPanel);
+    }//GEN-LAST:event_buyTicketButtonActionPerformed
+
+    private void logOutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logOutButtonActionPerformed
+        // TODO add your handling code here:
+        this.dispose();
+        LoginWindow lw = new LoginWindow();
+        lw.setVisible(true);
+    }//GEN-LAST:event_logOutButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton buyTicketButton;
@@ -172,10 +314,10 @@ public class MainWindow extends javax.swing.JFrame implements Runnable {
     private javax.swing.JButton helpButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
     private javax.swing.JButton logOutButton;
     private javax.swing.JLabel titleLabel;
     private javax.swing.JButton viewDestinationsButton;
+    private javax.swing.JPanel viewTicketPane;
     private javax.swing.JButton viewTicketsButton;
     // End of variables declaration//GEN-END:variables
 
