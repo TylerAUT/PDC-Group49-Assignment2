@@ -19,6 +19,10 @@ public class Destinations {
         this.numSeatsAvailable = numSeatsAvailable;
     }
 
+    public void test(){
+        
+    }
+    
     //Getters and setters for Destination object properties
     public void setIndex(int index) {
         this.index = index;
