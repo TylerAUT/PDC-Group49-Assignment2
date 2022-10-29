@@ -68,4 +68,21 @@ public class WriteToFile {
         }
     }
 
+//    public void DestinationsWriter(){
+//        try {
+//            PrintWriter pw = null;
+//            pw = new PrintWriter(new FileOutputStream("dests.txt"));
+//
+//            for (Destinations desArray1 : desArray) {
+//                String output = desArray1.getIndex() + "|" + desArray1.getDestName() + "|" + desArray1.getPrice() + "|" + desArray1.getNumSeatsAvailable();
+//                pw.println(output);
+//            }
+//
+//            pw.close();
+//
+//        } catch (FileNotFoundException ex) {
+//            System.out.println("File is not found!");
+//        }
+//    }
+    
 }
