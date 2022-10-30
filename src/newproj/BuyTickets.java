@@ -3,6 +3,7 @@ package newproj;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -16,13 +17,13 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 
 /**
  *
@@ -30,23 +31,28 @@ import javax.swing.JTextField;
  */
 public class BuyTickets extends JPanel {
 
+    //Swing Components
     public JLabel titleLabel, chooseLabel;
     JComboBox<String> destinationList;
     JButton proceedButton, confirmButton;
     JTextField amountOfTickets;
-    JLabel confirmLabel, costLabel, purchaseConfirmationLabel;
-    Destinations[] desArray = new Destinations[5];
-
-    DefaultListModel destinations = new DefaultListModel<>();
-    ArrayList<Destinations> destsReadFromFile = new ArrayList<Destinations>();
-
-    ArrayList<Destinations> desList = new ArrayList<Destinations>();
-    int[] availSeats = new int[5];
+    JLabel proceedLabel, confirmLabel, costLabel, purchaseConfirmationLabel;
     JPanel topPanel, bottomPanel, buyPanel, confirmPanel, centerPanel, textPanel;
-    JList list = new JList<>(destinations);
-    String loggedInAccount;
-    String enteredAmount;
+    Font titleFont;
+
+    //Lists
+    ArrayList<Destinations> destsReadFromFile = new ArrayList<Destinations>();
+    ArrayList<Destinations> desList = new ArrayList<Destinations>();
+    //JList list = new JList<>(destinations);
+
+    //Primitive Vars
+    int selected, selectedCost, newNumOfSeats, convert, total;
+    String loggedInAccount, enteredAmount;
+
+    //Arrays
     int[] prices = new int[]{100, 200, 245, 95, 220};
+    int[] availSeats = new int[5];
+    Destinations[] desArray = new Destinations[5];
 
     public BuyTickets(String account) {
         loggedInAccount = account;
@@ -54,7 +60,7 @@ public class BuyTickets extends JPanel {
         panelManager();
         loadDestinations();
         actionListens();
-        getIndex();
+        //getIndex();
 
     }
 
@@ -120,7 +126,6 @@ public class BuyTickets extends JPanel {
                 int index = Integer.parseInt(items[0]);
                 String name = items[1];
                 int price = Integer.parseInt(items[2]);
-                // prices[i] = price;
                 int numSeats = Integer.parseInt(items[3]);
 
                 availSeats[i] = numSeats;
@@ -129,6 +134,8 @@ public class BuyTickets extends JPanel {
                 Destinations newDest = new Destinations(index, name, price, numSeats);
                 desList.add(newDest);
                 destinationList.addItem(name);
+                                getIndex();
+
             }
 
         } catch (FileNotFoundException ex) {
@@ -138,9 +145,6 @@ public class BuyTickets extends JPanel {
 
     }
 
-    int selected;
-    int selectedCost;
-
     public void getIndex() {
         selected = destinationList.getSelectedIndex();
         selectedCost = prices[selected];
@@ -149,53 +153,92 @@ public class BuyTickets extends JPanel {
     }
 
     public void panelManager() {
+
+        topPanel();
+        centerPanel();
+        buyPanel();
+        textPanel();
+        bottomPanel();
+
+    }
+
+    public void topPanel() {
         topPanel.add(titleLabel);
+        titleLabel.setFont(titleFont);
+      //  topPanel.setBackground(Color.orange);
+
+        this.add(topPanel, BorderLayout.NORTH);
+
+    }
+
+    public void centerPanel() {
         centerPanel.add(chooseLabel);
         centerPanel.add(destinationList);
         centerPanel.add(costLabel);
-        textPanel.add(purchaseConfirmationLabel);
+       // centerPanel.setBackground(Color.PINK);
+
+        this.add(centerPanel, BorderLayout.CENTER);
+
+    }
+
+    public void buyPanel() {
+        buyPanel.add(proceedLabel);
         buyPanel.add(amountOfTickets);
         buyPanel.add(proceedButton);
+        
+        //buyPanel.setBackground(Color.WHITE);
+
+    }
+
+    public void textPanel() {
+        textPanel.add(purchaseConfirmationLabel);
+    }
+
+    public void bottomPanel() {
         bottomPanel.add(buyPanel, BorderLayout.NORTH);
         bottomPanel.add(confirmPanel, BorderLayout.CENTER);
         bottomPanel.add(textPanel, BorderLayout.SOUTH);
-        //panel.add(list, BorderLayout.CENTER);
-        this.add(topPanel, BorderLayout.NORTH);
-        this.add(centerPanel, BorderLayout.CENTER);
+
         this.add(bottomPanel, BorderLayout.SOUTH);
-        // this.add(list, BorderLayout.CENTER);
+       // confirmPanel.setBackground(Color.cyan);
 
     }
 
     public void windowContent() {
-        //Labels
-        destinationList = new JComboBox();
-        confirmLabel = new JLabel();
-        purchaseConfirmationLabel = new JLabel();
-        costLabel = new JLabel();
+        //Panels
         topPanel = new JPanel();
         textPanel = new JPanel();
         buyPanel = new JPanel();
-        amountOfTickets = new JTextField();
-        proceedButton = new JButton("Proceed");
-        confirmButton = new JButton("Confirm");
         bottomPanel = new JPanel();
         centerPanel = new JPanel();
         confirmPanel = new JPanel();
-        // this.add(panel, FlowLayout.CENTER);
-        topPanel.setBackground(Color.orange);
-        confirmPanel.setBackground(Color.blue);
-        centerPanel.setBackground(Color.PINK);
-        buyPanel.setBackground(Color.BLACK);
-        confirmPanel.setBackground(Color.cyan);
 
+        //Buttons
+        proceedButton = new JButton("Proceed");
+        confirmButton = new JButton("Confirm");
+
+        //Labels
         titleLabel = new JLabel("Buy Tickets here: ");
+        confirmLabel = new JLabel();
+        proceedLabel = new JLabel("Enter amount of tickets: ");
+        purchaseConfirmationLabel = new JLabel();
+        costLabel = new JLabel();
         chooseLabel = new JLabel("Select your destination: ");
 
-        this.setBackground(Color.red);
+        //Combobox
+        destinationList = new JComboBox();
 
-        //list.setLocationRelavtiveTo(null);
-        list.setSize(225, 125);
+        //Text Field
+        amountOfTickets = new JTextField();
+
+        //Fonts
+        titleFont = new Font("Calibri", Font.BOLD, 18);
+        
+        //Border
+         Border panelBorder = BorderFactory.createLineBorder(Color.black);
+        this.setBorder(panelBorder);
+        
+        //Sizes
         destinationList.setPreferredSize(new Dimension((200), 25));
         amountOfTickets.setPreferredSize(new Dimension((200), 25));
         centerPanel.setPreferredSize(new Dimension((100), 100));
@@ -203,17 +246,16 @@ public class BuyTickets extends JPanel {
         confirmPanel.setPreferredSize(new Dimension((100), 50));
         buyPanel.setPreferredSize(new Dimension((100), 50));
         textPanel.setPreferredSize(new Dimension((100), 100));
-
         bottomPanel.setPreferredSize(new Dimension((100), 250));
 
+        //Main panel properities
         this.setLayout(new BorderLayout());//new FlowLayout());
         bottomPanel.setLayout(new BorderLayout());
+       // this.setBackground(Color.red);
+
         this.setVisible(true);
 
     }
-
-    int newNumOfSeats;
-    int convert, total;
 
     public void actionListens() {
         destinationList.addActionListener(new ActionListener() {
@@ -225,25 +267,17 @@ public class BuyTickets extends JPanel {
                 confirmPanel.removeAll();
                 confirmPanel.repaint();
                 confirmPanel.revalidate();
-//                               
                 amountOfTickets.setText("");
-                //confirmLabel.setText("");
 
             }
-
         });
 
         amountOfTickets.addFocusListener(new FocusListener() {
             @Override
             public void focusGained(FocusEvent e) {
-                
-//                                 textPanel.removeAll();
-//            textPanel.repaint();
-//            textPanel.revalidate ();
-            purchaseConfirmationLabel.setText("");
-            }
 
-           
+                purchaseConfirmationLabel.setText("");
+            }
 
             @Override
             public void focusLost(FocusEvent e) {
@@ -254,21 +288,12 @@ public class BuyTickets extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Proceed Button Clicked!");
-                if (!amountOfTickets.getText().equals("") && amountOfTickets.getText().matches(".*[0-9].*")) {
+                if (!amountOfTickets.getText().equals("") && amountOfTickets.getText().matches(".*[1-9].*")) {
 
-                    enteredAmount = amountOfTickets.getText();
-                    convert = Integer.parseInt(enteredAmount);
-                    total = convert * prices[selected];
-                    confirmLabel.setText("You wish to purchase: " + enteredAmount + " " + destinationList.getItemAt(selected) + " tickets for $" + total + "? (@ $" + prices[selected] + " each)");
+                    beginBookingConfirmation();
 
-                    System.out.println("The total is: " + total);
-                    confirmPanel.add(confirmLabel);
-                    getIndex();
-                    confirmPanel.add(confirmButton);
                 } else {
-                    System.out.println("Input is blank!");
-                    purchaseConfirmationLabel.setText("Error! Invalid input");
-                    purchaseConfirmationLabel.setForeground(Color.red);
+                    printInvalidInputMessage();
                 }
 
             }
@@ -277,36 +302,61 @@ public class BuyTickets extends JPanel {
         confirmButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int selected = destinationList.getSelectedIndex();
                 System.out.println("Buy Button Clicked! Index: " + selected);
-                String amountDesired = amountOfTickets.getText();
-                int convertedAmount = Integer.parseInt(amountDesired);
-                System.out.println("Amount of tickets requested: " + convertedAmount);
+                System.out.println("Amount of tickets requested: " + convert);
                 System.out.println("Currently: " + destinationList.getItemAt(selected) + " has " + availSeats[selected]);
 
-                if (availSeats[selected] == 0 || convertedAmount > availSeats[selected]) {
-                    System.out.println("Cannot Do it!");
-
-                    purchaseConfirmationLabel.setText("Error! This destination has sold out or your request exceeds amount of tickets available");
-                    purchaseConfirmationLabel.setForeground(Color.red);
+                if (availSeats[selected] == 0 || convert > availSeats[selected]) {
+                    printErrorMessage();
                 } else {
-                    newNumOfSeats = availSeats[selected] - convertedAmount;
-
-                    System.out.println(destinationList.getItemAt(selected) + " now has " + newNumOfSeats);
-                    desList.set(selected, (new Destinations(selected, destinationList.getItemAt(selected), prices[selected], newNumOfSeats)));
-                    availSeats[selected] = newNumOfSeats;
-                    changeSeatsAvail();
-                    System.out.println("Updated: " + desList);
-
-                    purchaseConfirmationLabel.setForeground(Color.green);
-                    purchaseConfirmationLabel.setText(enteredAmount + " tickets for a total of " + total + " successfully purchased");
-                    storeBooking(destinationList.getItemAt(selected), prices[selected], convertedAmount);
+                    completeBookingConfirmation();
                 }
-//                
-//               
+
             }
 
         });
     }
 
+    public void beginBookingConfirmation() {
+        enteredAmount = amountOfTickets.getText();
+        convert = Integer.parseInt(enteredAmount);
+        total = convert * prices[selected];
+        confirmLabel.setText("You wish to purchase: " + enteredAmount + " " + destinationList.getItemAt(selected) + " tickets for $" + total + "? (@ $" + prices[selected] + " each)");
+        getIndex();
+
+        System.out.println("The total is: " + total);
+        confirmPanel.add(confirmLabel);
+        confirmPanel.add(confirmButton);
+    }
+
+    public void completeBookingConfirmation() {
+        newNumOfSeats = availSeats[selected] - convert;
+
+        System.out.println(destinationList.getItemAt(selected) + " now has " + newNumOfSeats);
+        desList.set(selected, (new Destinations(selected, destinationList.getItemAt(selected), prices[selected], newNumOfSeats)));
+        availSeats[selected] = newNumOfSeats;
+        changeSeatsAvail();
+        System.out.println("Updated: " + desList);
+
+        printConfirmationMessage();
+        storeBooking(destinationList.getItemAt(selected), prices[selected], convert);
+    }
+
+    public void printErrorMessage() {
+        System.out.println("Error! cannot validate");
+
+        purchaseConfirmationLabel.setText("Error! This destination has sold out or your request exceeds amount of tickets available");
+        purchaseConfirmationLabel.setForeground(Color.red);
+    }
+
+    public void printInvalidInputMessage() {
+        System.out.println("Input is invalid!");
+        purchaseConfirmationLabel.setText("Error! Invalid input");
+        purchaseConfirmationLabel.setForeground(Color.red);
+    }
+
+    public void printConfirmationMessage() {
+        purchaseConfirmationLabel.setForeground(Color.GREEN);
+        purchaseConfirmationLabel.setText(enteredAmount + " tickets for a total of " + total + " successfully purchased");
+    }
 }

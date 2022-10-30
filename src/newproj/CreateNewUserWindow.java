@@ -241,7 +241,7 @@ public class CreateNewUserWindow extends javax.swing.JFrame {
         System.out.println("Confirm user clicked");
         checkUsername();
         checkPassword();
-        authenticate();
+       authenticate();
 
     }//GEN-LAST:event_createButtonActionPerformed
 
@@ -283,13 +283,14 @@ public class CreateNewUserWindow extends javax.swing.JFrame {
     }
 
     public void authenticate() {
-        if (userNameAuthenticated && passwordAuthenticated) {
+        if (userNameAuthenticated == true && passwordAuthenticated == true) {
             System.out.println("Authentication Process beginning");
-        }
-        loadUser();
+              loadUser();
         this.dispose();
         LoginWindow lw = new LoginWindow();
         lw.setVisible(true);
+        }
+      
     }
 
     /**

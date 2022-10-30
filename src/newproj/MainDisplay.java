@@ -11,11 +11,9 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
@@ -82,8 +80,8 @@ public class MainDisplay extends JFrame implements Runnable {
 //South Panel
 
         southPanel.add(southLabel);
-        southLabel.setText("SOUTH");
-        southPanel.setBackground(Color.RED);
+       // southLabel.setText("SOUTH");
+      //  southPanel.setBackground(Color.RED);
         southPanel.add(logOutButton);
         logOutButton.setText("Logout");
         display.add(southPanel, BorderLayout.SOUTH);
@@ -94,10 +92,10 @@ public class MainDisplay extends JFrame implements Runnable {
 
     public void eastPanel() {
         //East Panel
-        eastPanel.setBackground(Color.CYAN);
+      //  eastPanel.setBackground(Color.CYAN);
         display.add(eastPanel, BorderLayout.EAST);
         eastPanel.add(eastLabel);
-        eastLabel.setText("EAST");
+        //eastLabel.setText("EAST");
 
         eastPanel.setPreferredSize(new Dimension((100), 50));
 
@@ -107,8 +105,7 @@ public class MainDisplay extends JFrame implements Runnable {
 
         //West Panel
         westPanel.add(westLabel);
-        //westLabel.setText("WEST");
-        westPanel.setBackground(Color.PINK);
+      //  westPanel.setBackground(Color.PINK);
         display.add(westPanel, BorderLayout.WEST);
 
         westPanel.setPreferredSize(new Dimension((200), 50));
@@ -149,7 +146,7 @@ public class MainDisplay extends JFrame implements Runnable {
         //Labels
         this.headerLabel = new JLabel("", SwingConstants.CENTER);
         this.clockLabel = new JLabel("", SwingConstants.CENTER); //centers the text
-        this.centerLabel = new JLabel();
+        this.centerLabel = new JLabel("", SwingConstants.CENTER);
         this.southLabel = new JLabel();
         this.westLabel = new JLabel();
         this.eastLabel = new JLabel();
@@ -176,7 +173,7 @@ public class MainDisplay extends JFrame implements Runnable {
         display.setSize(900, 600);
         display.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         display.setLocationRelativeTo(null);
-        display.setTitle("Booking System");
+        display.setTitle("Wellington Train Booking System");
         display.setResizable(true);
         display.setVisible(true);
 

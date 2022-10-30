@@ -7,9 +7,8 @@ package newproj;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import static java.util.Collections.list;
+import java.awt.Font;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -19,10 +18,12 @@ import javax.swing.JTextArea;
  * @author tscos
  */
 public class HelpPage extends JPanel {
- JScrollPane scrollPane;
+
+    JScrollPane scrollPane;
     public JLabel titleLabel, text;
     public JTextArea textArea;
-    JPanel panel, panel2;
+    JPanel topPanel, bottomPanel;
+    Font titleFont;
 
     HelpPage() {
         windowContent();
@@ -30,30 +31,35 @@ public class HelpPage extends JPanel {
     }
 
     public void panelManager() {
-        panel.add(titleLabel);
-        //panel.add(list, BorderLayout.CENTER);
-        //panel2.add(text);
-        panel2.add(scrollPane);
-        this.add(panel, BorderLayout.NORTH);
-        this.add(panel2, BorderLayout.CENTER);
+        topPanel.add(titleLabel);
+        titleLabel.setFont(titleFont);
+        bottomPanel.add(scrollPane);
+        this.add(topPanel, BorderLayout.NORTH);
+        this.add(bottomPanel, BorderLayout.CENTER);
+        textArea.setEditable(false);
 
     }
 
     public void windowContent() {
         //Labels
-        panel = new JPanel();
-        panel2 = new JPanel();
+        titleLabel = new JLabel("View Help here: ");
 
+        //Area
         textArea = new JTextArea();
 
-        // this.add(panel, FlowLayout.CENTER);
-        panel.setBackground(Color.orange);
-        titleLabel = new JLabel("View Help here: ");
-        text = new JLabel("test");
-        panel2.setBackground(Color.red);
+        //Panels
+        topPanel = new JPanel();
+        bottomPanel = new JPanel();
 
-        ReadFromFile rff = new ReadFromFile("help");
-        String help = rff.readFileString();
+        //topPanel.setBackground(Color.orange);
+        //bottomPanel.setBackground(Color.red);
+
+        //Fonts
+        titleFont = new Font("Calibri", Font.BOLD, 18);
+
+        //ScrollPane
+        scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         textArea.setText(
                 "\n"
@@ -82,19 +88,10 @@ public class HelpPage extends JPanel {
                 + "Shambhavi Bhadauria 20108165\n"
                 + "");
 
-        textArea.setEditable(false);
-         scrollPane = new JScrollPane(textArea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-//scrollPane.setViewportView(textArea);
-//.setText(help);
-        //textArea.setText(help);
-        //list.setLocationRelavtiveTo(null);
-        //  list.setSize(225, 125);
-        //  list.setPreferredSize(new Dimension((100), 100));
-        panel.setPreferredSize(new Dimension((100), 50));
-        panel2.setPreferredSize(new Dimension((100), 250));
-       scrollPane.setPreferredSize(new Dimension((550), 250));
-        
+        //Sizes
+        topPanel.setPreferredSize(new Dimension((100), 50));
+        bottomPanel.setPreferredSize(new Dimension((100), 250));
+        scrollPane.setPreferredSize(new Dimension((550), 250));
 
         this.setLayout(new BorderLayout());//new FlowLayout());
         this.setVisible(true);
