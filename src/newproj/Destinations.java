@@ -11,12 +11,14 @@ public class Destinations {
     private int price;
     private int numSeatsAvailable;
 
+
     //Constructor for Destination objects
     public Destinations(int index, String destName, int price, int numSeatsAvailable) {
         this.index = index;
         this.destName = destName;
         this.price = price;
         this.numSeatsAvailable = numSeatsAvailable;
+        
     }
 
 

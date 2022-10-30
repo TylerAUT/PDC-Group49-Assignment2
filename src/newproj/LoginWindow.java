@@ -1,6 +1,10 @@
 package newproj;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -246,7 +250,12 @@ public class LoginWindow extends javax.swing.JFrame {
             errorLabel.setText("    ");
 
             System.out.println("Theres a match!");
-            
+            File file = new File(userNames[index]+"boughtTickets.txt");
+            try {
+                file.createNewFile();
+            } catch (IOException ex) {
+                Logger.getLogger(LoginWindow.class.getName()).log(Level.SEVERE, null, ex);
+            }
             //MainWindow mw = new MainWindow(name);
             MainDisplay md = new MainDisplay(name);
            // mw.setVisible(true);

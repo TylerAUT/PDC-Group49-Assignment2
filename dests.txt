@@ -1,5 +1,5 @@
-0|Auckland|100|4
-1|Christchurch|200|37
-2|Dunedin|245|30
+0|Auckland|100|0
+1|Christchurch|200|28
+2|Dunedin|245|21
 3|Hamilton|95|13
-4|Greymouth|220|19
+4|Greymouth|220|20

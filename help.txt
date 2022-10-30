@@ -1,0 +1,19 @@
+This is the help file, (read from help.txt) 
+
+How To use this application:
+
+To choose a menu item, simply type the corresponding number into the console and hit enter
+
+Example, the menus are laid out like this: 
+1. Destinations
+2. Buy Tickets
+3. Exit
+
+To access the Tickets menu, type 2 and hit enter.
+
+
+This program was created by: 
+
+Group 49
+Tyler Costa 19075541
+Shambhavi Bhadauria 20108165

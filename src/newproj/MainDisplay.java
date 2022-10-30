@@ -42,7 +42,6 @@ public class MainDisplay extends JFrame implements Runnable {
 
         WindowContents();
 
-
         panelManager();
         actionListens();
         runClock();
@@ -70,8 +69,11 @@ public class MainDisplay extends JFrame implements Runnable {
 
         container.add("a", new ViewDestinations());
 
-        container.add("b", new BuyTickets());
+        container.add("b", new BuyTickets(loggedInAccount));
 
+        container.add("c", new ViewBoughtTickets(loggedInAccount));
+
+        container.add("d", new HelpPage());
         display.add(container, BorderLayout.CENTER);
 
     }
@@ -171,7 +173,7 @@ public class MainDisplay extends JFrame implements Runnable {
         this.helpButton.setPreferredSize(new Dimension((150), 30));
 
         //JFrame components
-        display.setSize(800, 600);
+        display.setSize(900, 600);
         display.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         display.setLocationRelativeTo(null);
         display.setTitle("Booking System");
@@ -185,7 +187,7 @@ public class MainDisplay extends JFrame implements Runnable {
         viewDestinationsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                        container.add("a", new ViewDestinations());
+                container.add("a", new ViewDestinations());
 
                 cardlayout.show(container, "a");
                 //display.setResizable(false);
@@ -200,9 +202,27 @@ public class MainDisplay extends JFrame implements Runnable {
             }
         });
 
+        viewBoughtTicketsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                container.add("c", new ViewBoughtTickets(loggedInAccount));
+
+                cardlayout.show(container, "c");
+            }
+
+        });
+
+        helpButton.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardlayout.show(container, "d");
+            }
+        });
+        
         logOutButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 System.out.println("Back to login Button Clicked!");
                 display.dispose();
                 LoginWindow launch = new LoginWindow();
@@ -234,5 +254,3 @@ public class MainDisplay extends JFrame implements Runnable {
         }
     }
 }
-
-

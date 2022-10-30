@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JTextArea;
 
 /**
  *
@@ -27,8 +28,6 @@ public class ReadFromFile {
         this.filePath = filePath;
     }
 
-
-    
     //Generic File Reader from week 2
     public void readFile() {
 
@@ -57,7 +56,7 @@ public class ReadFromFile {
         try {
             BufferedReader br;
 
-            br = new BufferedReader(new FileReader(filePath+fileExtension));
+            br = new BufferedReader(new FileReader(filePath + fileExtension));
             String line;// = null;
             try {
                 while ((line = br.readLine()) != null) {
