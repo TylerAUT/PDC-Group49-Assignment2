@@ -52,7 +52,7 @@ public class MainDisplay extends JFrame implements Runnable {
         northPanel.setBackground(Color.WHITE);
         northPanel.add(headerLabel);
         headerLabel.setText("Welcome to the Wellington Train Booking Service, " + loggedInAccount);
-        headerLabel.setPreferredSize(new Dimension((600), 50));
+        headerLabel.setPreferredSize(new Dimension((800), 50));
         headerLabel.setFont(titleFont);
         display.add(northPanel, BorderLayout.NORTH);
         northPanel.setPreferredSize(new Dimension((100), 100));

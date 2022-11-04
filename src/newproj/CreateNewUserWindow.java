@@ -28,6 +28,7 @@ public class CreateNewUserWindow extends javax.swing.JFrame {
      */
     public CreateNewUserWindow() {
         initComponents();
+        this.setTitle("Create a New User");
         System.out.println(rff.readFileString());
 
     }
@@ -239,9 +240,17 @@ public class CreateNewUserWindow extends javax.swing.JFrame {
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
         System.out.println("Confirm user clicked");
-        checkUsername();
-        checkPassword();
-       authenticate();
+        if (!userNameTextField.getText().equals("") || !confirmUserNameTextField.getText().equals("")
+                || !passwordTextField.getText().equals("") || !confirmPasswordTextField.getText().equals("")) {
+            checkUsername();
+            checkPassword();
+            authenticate();
+        } else {
+            System.out.println("Invalid input!");
+            passwordErrorLabel.setText("Invalid Input!");
+
+        }
+
 
     }//GEN-LAST:event_createButtonActionPerformed
 
@@ -285,18 +294,17 @@ public class CreateNewUserWindow extends javax.swing.JFrame {
     public void authenticate() {
         if (userNameAuthenticated == true && passwordAuthenticated == true) {
             System.out.println("Authentication Process beginning");
-              loadUser();
-        this.dispose();
-        LoginWindow lw = new LoginWindow();
-        lw.setVisible(true);
+            loadUser();
+            this.dispose();
+            LoginWindow lw = new LoginWindow();
+            lw.setVisible(true);
         }
-      
+
     }
 
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel bottomPanel;

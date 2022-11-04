@@ -21,6 +21,7 @@ public class LoginWindow extends javax.swing.JFrame {
      * Creates new form LoginWindow
      */
     public LoginWindow() {
+        this.setTitle("Login Window");
         initComponents();
         loadUsers();
     }
